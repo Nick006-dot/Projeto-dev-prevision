@@ -15,7 +15,7 @@
         <button onclick="cliqueiNoBotao()"><i class="fa-solid fa-magnifying-glass"></i></button>
 
         <div class="caixa-media">
-            <h2 class="cidade">Tempo em Curitiba</h2>
+            <h2 class="cidade">Tempo em </h2>
             <p class="temp">28°C</p>
             
             <div class="caixa-menor">
@@ -23,10 +23,30 @@
                 <p class="descricao">Nuvens Dispersas</p>
             </div>
 
-            <p class="umidade">Umidade: 30%</p>
+            <p class="umidade">Umidade:</p>
         </div>
     </div>
 </body>
-<script src="./scripts.js"></script>
+<script>
+    let chave = "37524c58b8115dfc031d9f2a001f62dd"
 
+function display(dados) {
+    console.log(dados)
+    document.querySelector(".cidade").innerHTML = `Tempo em ${dados.name}`
+    document.querySelector(".temp").innerHTML = Math.floor(dados.main.temp) + "°C"
+    document.querySelector(".descricao").innerHTML = dados.weather[0].description
+    document.querySelector(".umidade").innerHTML = `Umidade: ${dados.main.humidity}%`
+    document.querySelector(".icone").src = "https://openweathermap.org/img/wn/" + dados.weather[0].icon + ".png"
+}
+
+async function buscarCidade(cidade) {
+    let dados = await fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cidade + "&appid=" + chave + "&lang=pt_br" + "&units=metric").then( resposta => resposta.json())
+    display(dados)
+}
+
+function cliqueiNoBotao() {
+    let cidade = document.querySelector(".input-cidade").value 
+    buscarCidade(cidade)
+}
+</script>
 </html>
